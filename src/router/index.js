@@ -5,6 +5,7 @@ import Shopcar from "@/views/homePage/Shopcar.vue"
 //导入路由规则组件
 import centerRouter from './routes/center'
 import homePagePouter from './routes/homePage'
+import foodsRouter from './routes/foods'
 
 Vue.use(VueRouter)
 
@@ -17,7 +18,8 @@ const routes = [
     component: Shopcar
   },
   ...centerRouter,
-  ...homePagePouter
+  ...homePagePouter,
+  ...foodsRouter
 ]
 
 const router = new VueRouter({
