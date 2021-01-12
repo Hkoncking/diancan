@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Footer></Footer>
+    <Footer v-show="isShow"></Footer>
     <router-view/>
   </div>
 </template>
@@ -20,7 +20,9 @@ export default {
 
   },
   computed: {
-
+    isShow() {
+      return this.$store.state.global.isShow
+    }
   }
 }
 </script>
