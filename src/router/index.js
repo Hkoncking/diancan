@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 //导入路由规则组件
 import centerRouter from './routes/center'
 import homePagePouter from './routes/homePage'
+import buy from "@/views/homePage/buy"
 
 Vue.use(VueRouter)
 
@@ -12,7 +13,11 @@ const routes = [
     path: "/", redirect: "/homePage"
   },
   ...centerRouter,
-  ...homePagePouter
+  ...homePagePouter,
+  {
+    path: "/buy",component: buy
+  }
+ 
 ]
 
 const router = new VueRouter({
