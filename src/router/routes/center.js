@@ -1,3 +1,4 @@
+
 import Center from "@/views/center/Index.vue";
 import Login from "@/views/center/login.vue";
 import Indent from "@/views/center/Indent.vue";
@@ -27,5 +28,6 @@ var center = [
   },
   
 ];
+
 
 export default center;
