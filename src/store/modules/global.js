@@ -1,17 +1,22 @@
 export default {
     namespaced: true,
-    state: {
-        isShow: true
+    state:{
+        isShows: true,
+        datas:[]
     },
-    mutations: {
-        setFooter(state, arg) {
-            state.isShow = arg
+    mutations:{
+        isShowFooter(state,arg){
+
+            state.isShows = arg
+        },
+
+        isnow(state,arg){
+            state.datas = arg
         }
     },
-    actions: {
-
-    },
-    getters: {
+    actions:{
         
-    }
+    },
+    getters:{},
 }
+
