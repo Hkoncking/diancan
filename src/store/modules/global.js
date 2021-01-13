@@ -2,11 +2,14 @@ export default {
     namespaced: true,
     state:{
         isShows: true,
-        datas:[]
+        datas:[],
+        clicks:'',
+        arrs:[],
+        manjians:0,
     },
     mutations:{
         isShowFooter(state,arg){
-
+            // console.log(arg);
             state.isShows = arg
         },
 

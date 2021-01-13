@@ -7,7 +7,7 @@ import centerRouter from './routes/center'
 import homePagePouter from './routes/homePage'
 import buy from "@/views/homePage/buy"
 import foodsRouter from './routes/foods'
-
+import pay from "@/views/homePage/payfor/pay.vue"
 
 Vue.use(VueRouter)
 
@@ -18,6 +18,10 @@ const routes = [
   {
     path:'/shopcar',
     component: Shopcar
+  },
+  {
+    path:'/pay',
+    component: pay
   },
   ...centerRouter,
   ...homePagePouter,

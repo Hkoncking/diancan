@@ -20,138 +20,20 @@
       color="#1ABC9C"
     >
       <van-tab title="未使用" name="a">
-        <div class="box-indent">
+
+
+        <div class="box-indent" v-for="(item,index) in allyouhuiquan" :key="index" @click="clickss(item.manjian,item.id)">
           <div class="left">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
+            <h3>￥{{item.manjian}}元</h3>
+            <p>满{{item.price}}元可用</p>
           </div>
           <div class="right">
             <span>通用</span>
             <p>有效期至:2012-12-12</p>
           </div>
         </div>
-        <div class="box-indent">
-          <div class="left">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-          </div>
-        </div>
-        <div class="box-indent">
-          <div class="left">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-          </div>
-        </div>
-        <div class="box-indent">
-          <div class="left">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-          </div>
-        </div>
-        <div class="box-indent">
-          <div class="left">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-          </div>
-        </div>
-      </van-tab>
-      <van-tab title="已使用" name="b">
-        <div class="box-indent">
-          <div class="left" style="background:#CCCCCC">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-            <img
-              src="../../assets/guoqi.png"
-              width="58px"
-              height="58px"
-              alt=""
-            />
-          </div>
-        </div>
-        <div class="box-indent">
-          <div class="left" style="background:#CCCCCC">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-            <img
-              src="../../assets/guoqi.png"
-              width="58px"
-              height="58px"
-              alt=""
-            />
-          </div>
-        </div>
-        <div class="box-indent">
-          <div class="left" style="background:#CCCCCC">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-            <img
-              src="../../assets/guoqi.png"
-              width="58px"
-              height="58px"
-              alt=""
-            />
-          </div>
-        </div>
-        <div class="box-indent">
-          <div class="left" style="background:#CCCCCC">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-            <img
-              src="../../assets/guoqi.png"
-              width="58px"
-              height="58px"
-              alt=""
-            />
-          </div>
-        </div>
-        <div class="box-indent">
-          <div class="left" style="background:#CCCCCC">
-            <h3>￥10元</h3>
-            <p>满100元可用</p>
-          </div>
-          <div class="right">
-            <span>通用</span>
-            <p>有效期至:2012-12-12</p>
-            <img
-              src="../../assets/guoqi.png"
-              width="58px"
-              height="58px"
-              alt=""
-            />
-          </div></div
-      ></van-tab>
+ 
+       </van-tab>
       <van-tab title="已过期" name="c">
         <div class="box-indent">
           <div class="left" style="background:#CCCCCC">
@@ -243,17 +125,47 @@ Vue.use(Tab);
 Vue.use(Tabs);
 Vue.use(NavBar);
 Vue.use(Icon);
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     return {
       activeName: "a",
+      allyouhuiquan:[],
     };
   },
   methods: {
+        ...mapMutations("global", ["isShowFooter"]),
+
     clickleft() {
-      this.$router.push("/center");
+      this.$router.go(-1)
     },
-    onClickRight() {},
+    onClickRight() {
+
+    },
+    clickss(manjian,id){
+
+      // console.log(manjian);
+      // console.log(id);
+
+      this.$store.state.global.clicks = id
+      this.$store.state.global.manjians = manjian
+
+      // console.log(this.$store.state.global.clicks);
+      this.$router.push('/shopcar')
+    }
+  },
+  created() {
+       this.isShowFooter(false)
+      // console.log(this.$route);
+      this.$http.get('http://127.0.0.1:3000').then(res => {
+
+        this.allyouhuiquan = res[0].fullDec
+        this.$store.state.global.arrs = res[0].fullDec
+        // console.log(this.$store.state.global.arrs);
+
+        // console.log(this.allyouhuiquan);
+      })
   },
 };
 </script>

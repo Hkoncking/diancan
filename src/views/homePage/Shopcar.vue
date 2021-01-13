@@ -1,22 +1,28 @@
 <template>
     <div>
-        <van-card title="商品标题" thumb="https://img.yzcdn.cn/vant/ipad.jpeg" class="foodInfo">
+        <div class="Boss">
+            <span @click="back">&lt;</span>
+        </div>
+        <van-card v-for="(item,index) in opp" :key="index" :thumb="item.img" class="foodInfo">
+            <template #title>
+                <p class="p_one">{{item.name}}</p>
+            </template>
+
             <template #num>
-                <p class="num">$15.8</p>
+                <p class="num">￥ {{item.zhe ? item.zhe * item.num : item.price * item.num}}</p>
             </template>
             <template #price>
-                <p class="price">x10</p>
+                <p class="price">X {{item.num}}</p>
             </template>
             <template #footer>
-                <button class="del">删除</button>
+                <button class="del" @click="del(item.id, index)">删除</button>
             </template>
         </van-card>
-        <div class="discounts">
-            <p><span>惠</span>优惠券</p><span>-$15 <em>></em></span>
+        <div class="discounts" @click="goyouhui">
+            <p><span>惠</span>优惠券</p><span>-￥{{obj_manjian}} <em>></em></span>
         </div>
         <div class="total">
-            已优惠: <span>$30</span>
-            小计: <span>$28</span>  
+            已优惠: <span>￥{{obj_manjian}}</span>
         </div>
         <div class="personNum">
             <p>就餐人数 <span @click="choseNum">{{personnum}}人<b>></b></span></p>
@@ -29,7 +35,7 @@
             备注 <input type="text" placeholder="请输入口味,偏好等要求">
         </div>
         <div class="pay">
-            <span>应付金额 ￥<b>35</b></span><span>立即支付</span>
+            <span>应付金额 ￥<b>{{mvp -  obj_manjian > 0 ? mvp -  obj_manjian : 0}}</b></span><span @click="span">立即支付</span>
         </div>
     </div>
 </template>
@@ -40,12 +46,20 @@ Vue.use(Card);
 Vue.use(ShareSheet);
 //vuex映射
 import { mapMutations } from "vuex";
+
+// import goyouhuiquan from "@/center/coupon"
 export default {
    data() {
        return {
            personnum:"1",
            list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,'10人以上'],
-           showlist: false
+           showlist: false,
+           opp:[],
+           mvp:0,
+           svp:0,
+           clickss:'',
+           obj:{},
+           obj_manjian: '',
        }
    },
    methods: {
@@ -57,13 +71,58 @@ export default {
            this.personnum = num,
            this.showlist = false
        },
+       span(){
+           this.$http.post("http://127.0.0.1:3000/indent",{data:this.opp})
+
+           this.$router.push("/pay")
+       },
+       back(){
+           this.$router.push('/buy')
+       },
+       goyouhui(){
+           this.$router.push('/coupon')
+        //    console.log(this.obj.manjian);
+       },
+       del(id, index) {
+           this.opp.splice(index,1)
+           localStorage.setItem("data",JSON.stringify(this.opp))
+            this.handel()
+
+       },
+
+        handel(){
+        this.mvp = 0 
+        this.opp = JSON.parse(window.localStorage.getItem("data"))
+        this.opp.forEach(el => {
+            if(el.zhe){
+
+                this.mvp += el.num * el.zhe
+            }else{
+
+                this.mvp += el.num * el.price
+            }
+        })
+       }
+
    },
+   
    created() {
-       this.isShowFooter(false)
+
+        // console.log(this.$store.state.global.manjians);
+        this.obj_manjian = this.$store.state.global.manjians
+        this.$store.commit('global/isShowFooter',false)
+
+        this.handel()
+
+        this.clickss = this.$store.state.global.clicks
+        // console.log(this.clickss);
+        this.$store.state.global.arrs.forEach(el => {
+            if(el.id == this.clickss){
+                this.obj = el
+            }
+        })
    },
-   beforeDestroy() {
-       this.isShowFooter(true)
-   }
+   
 }
 </script>
 
@@ -168,6 +227,7 @@ export default {
     align-items: center;
     padding: 20px 10px;
     border-top: 10px solid #F5F5F5;
+    padding-bottom: 150px;
 }
 .atention > input {
     outline: none;
@@ -193,5 +253,48 @@ export default {
     border-radius:  0 30px 30px 0;
     background-color: #FF0000;
     padding: 10px 26px;
+}
+.Boss{
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #dfdfdf;
+}
+.Boss > span{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+.p_one{
+    font-size: 20px;
+    margin: 0;
+}
+.price{
+    font-size: 20px;
+    
+}
+.num{
+    font-size: 30px;
+}
+.del{
+    width: 50px;
+    height: 30px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background: orange;
+    border: 2px solid black;
+    position: absolute;
+    top: 0px;
+    left: 300px;
+}
+.foodInfo{
+    position: relative;
 }
 </style>

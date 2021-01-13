@@ -2,8 +2,7 @@
   <div id="app">
 
     
-    <Footer v-show="$store.state.global.isShows"></Footer>
-
+    <Footer v-show="isShows"></Footer>
     <router-view/>
   </div>
 </template>
@@ -12,6 +11,7 @@
 import Footer from '@/components/Footer.vue'
 import uri from "@/config/uri"
 import { mapMutations } from "vuex"
+import { mapState } from "vuex"
 
 export default {
   data() {
@@ -32,13 +32,13 @@ export default {
     // console.log(this.$store.state.global.datas)
     this.$http.get(uri.getNow).then(ret => {
         this.isnow(ret)
-      // console.log(ret);
-    // console.log(this.$store.state.global.datas)
-
     })
   },
   computed: {
-    
+    isShow() {
+      return this.$store.state.global.isShow
+    },
+    ...mapState("global",['isShows'])
   }
 }
 </script>

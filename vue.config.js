@@ -13,7 +13,7 @@ module.exports = {
             // axios中相对地址开头的字符串  匹配请求uri中的前几位
             "/api": {
                 // 把相对地址中的域名 映射到 目标地址中
-                target: "https://api.iynn.cn/fastmock/api/site",
+                target: "https://m.28sjw.com/order/getQR.php",
                 // 修改host请求的域名为目标域名
                 // changeOrigin: false,
                 changeOrigin: true,
