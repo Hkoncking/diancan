@@ -55,24 +55,24 @@
                         点餐
                     </span>
                 </div>
-                <div class="two">
+                <div class="two" @click="youhuijuan">
                     <img src="https://axhub.im/pro/221031c5a692ef70/images/%E9%A6%96%E9%A1%B5/u19.png" alt="">
                     <span>
                         优惠券
                     </span>
                 </div>
-                <div class="three">
+                <!-- <div class="three" @click="paidui">
                     <img src="https://axhub.im/pro/221031c5a692ef70/images/%E9%A6%96%E9%A1%B5/u31.png" alt="">
                     <span>
                         排队取号
                     </span>
                 </div>
-                <div class="four">
+                <div class="four" @click="yuyue">
                     <img src="https://axhub.im/pro/221031c5a692ef70/images/%E9%A6%96%E9%A1%B5/u23.png" alt="">
                     <span>
                         餐桌预约
                     </span>
-                </div>
+                </div> -->
             </div>
             <div class="box4"></div>
             <div class="box5">本店菜品</div>
@@ -165,13 +165,13 @@ export default {
         };
   },
   methods:{
-      fun(){
-        this.$http.get(uri.getNow).then(ret => {
-        this.text = ret
-        // console.log(this.text);
-        this.text_data = this.text[this.num].data
-    })
-    },
+       fun(){
+            this.$http.get(uri.getNow).then(ret => {
+            this.text = ret
+            // console.log(this.text);
+            this.text_data = this.text[this.num].data
+        })
+        },
       changes(){
         this.$router.push("./buy")
       },
@@ -186,6 +186,15 @@ export default {
       changesss(index){
           this.num = index
           this.fun()
+      },
+      youhuijuan(){
+          this.$router.push("/coupon")
+      },
+      yuyue(){
+
+      },
+      paidui(){
+
       }
   },
   filters:{
@@ -201,14 +210,13 @@ export default {
   created(){
     //   this.text = this.$store.state.global.datas
     //   console.log(this.$store.state.global.datas);
+        this.$store.commit("global/isShowFooter",true)
 
-    this.fun()
+        this.fun()
 
         // this.text_data = this.text[1].data
   },
-  beforeDestroy(){
 
-  }
 }
 </script>
         
@@ -375,15 +383,15 @@ export default {
 }
 .four_all{
     width: 100%;
-    height: 235px;
+    height: 135px;
     box-sizing: border-box;
     display: flex;
     flex-flow: wrap;
-    padding: 15px 10px;
+    padding: 10px 10px;
 }
 .four_all > div{
     width: 45%;
-    height: 45%;
+    height: 95%;
     margin: 8px 8px;
     box-sizing: border-box;
     border-radius: 10px;

@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="box">点餐</div>
+        <div class="box"> 
+            <span @click="back">&lt;</span>
+            <div>点餐</div>
+            </div>
         <div class="boss">
             <div>
                 <van-sidebar v-model="activeKey"> 
@@ -65,7 +68,9 @@
 
                     <template #footer>
                             <div class="footer">
-                                <span>+</span>
+                                <div class="footer_top" @click="gouwuche(index,data.id)">
+                                    加入购物车
+                                </div>
                             </div>
                     </template>
 
@@ -74,15 +79,15 @@
             </div>
         </div>
         <div class="jiao">
-            <div class="yuan">
+            <div class="yuan active">
                 <img src="https://axhub.im/pro/221031c5a692ef70/images/%E6%89%AB%E7%A0%81%E7%82%B9%E9%A4%90/u151.png" alt="">
             </div>
-            <div class="center">
+            <div class="center active">
                 <span>
                     请添加菜品
                 </span>
             </div>
-            <div class="right">
+            <div class="right active" @click="go">
                 去下单
             </div>
         </div>
@@ -107,11 +112,23 @@ export default {
             text:[],
             text_data: [],
             num:0,
+            totlo:0,
+            arr:[],
+            str:[],
+            datass:[],
         };
     },
     created(){
         this.fun()
         this.$store.commit('global/isShowFooter',false)
+
+
+        this.str.forEach(ret => {
+            this.arr.push(ret.id)
+        })
+        this.str = JSON.parse(window.localStorage.getItem('data')) ? JSON.parse(window.localStorage.getItem('data')) : []
+        // console.log(this.$store.state.global.datas);
+         
     },
      filters:{
       getdata(data){
@@ -123,11 +140,31 @@ export default {
           }
       }
   },
-    beforeDestroy(){
-
-        this.$store.commit('global/isShowFooter',true)
-    },
     methods:{
+        // fu(){
+        //     // console.log(this.$store.state.global.datas)
+        //     let b = 0
+        //     this.arr.forEach(item => {
+        //         this.$http.get(uri.getNow).then(ret => {
+        //             // console.log(ret)
+        //             ret.forEach(ress => {
+        //                 ress.data.forEach(el => {
+        //                     // console.log(el);
+        //                     // console.log(item);
+        //                     if(el.id == item){
+                                
+        //                         this.all += el.num * el.zhe
+                                
+        //                     }else{
+                               
+        //                     }
+        //                 })
+        //             })
+        //         })
+        //     })
+        //     this.all = b
+        // },
+
          fun(){
             this.$http.get(uri.getNow).then(ret => {
                 this.text = ret
@@ -138,9 +175,91 @@ export default {
         changesss(index){
           this.num = index
           this.fun()
-      }
+      },
+      back(){
+          this.$router.push("/")
 
-    }
+      },
+      gouwuche(index,id){
+        //   console.log(id);
+            if(!this.arr.includes(id)){
+
+                this.arr.push(id)
+                this.str.push(this.text_data[index])
+                
+
+                console.log(this.str);
+            window.localStorage.setItem("data",JSON.stringify(this.str))
+            }else{
+                this.str.forEach(el => {
+                    if(el.id == id){
+                        el.num++
+                        
+             window.localStorage.setItem("data",JSON.stringify(this.str))
+
+                    }
+                })
+            }
+      },
+    //   add(index,id){
+    //         this.datass = this.$store.state.global.datas
+    //         console.log(this.datass);
+
+
+    //         this.text_data[index].num++
+    //         if(!this.arr.includes(id)) {
+    //             this.arr.push(this.text_data[index].id)
+    //         }  
+
+    //         this.fu()
+    //         // fun()
+    //         // console.log(this.arr);
+            
+    //   },
+    //   jian(index,id){
+            
+    //         this.text_data[index].num--
+    //         let a = 0
+    //         if(this.arr.includes(id)){
+    //             this.arr.forEach(el => {
+    //                 if(el == id){
+    //                     // console.log("duile");
+    //                     if(this.text_data[index].num <= 0){
+    //                         // console.log(a);
+    //                         this.text_data[index].num = 0
+    //                             this.arr.splice(a,1)
+
+    //                     }
+    //                     a++
+
+    //                 }else{
+    //                     // console.log("cuole");
+    //                 }
+    //             }) 
+    //         }
+    //         // console.log(this.arr);
+    //     },
+        go(){
+            this.$router.push("/shopcar")
+        }
+        // fun(){
+        //     if(this.arr.length > 0 ){
+        //         this.asd = "yuan " + "active"
+        //         this.center = "center " + "active"
+        //         this.right = "right" + "active"
+        //     }else{
+
+        //         this.asd = "yuan"
+        //         this.center = "center"
+        //         this.right = "right"
+        //     }
+        // }
+    },
+    //     beforeDestroy(){
+
+    //     this.$store.commit('global/isShowFooter',false)
+    // },
+
 }
 </script>
 
@@ -148,6 +267,41 @@ export default {
 
 
 <style lang="scss" scoped>
+.footer_top{
+    position: absolute;
+    top: 60px;
+    left: 200px;
+    width: 80px;
+    height: 30px;
+    // background: red;
+    background: orange;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 13px;
+    border-radius: 10px;
+}
+.footer_top > span{
+    width: 20px;
+    height: 20px;
+    background: #D7D7D7;
+    color: black;
+    border-radius: 90px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.footer_top > input{
+    width: 20px;
+    height: 20px;
+    outline: none;
+    border: none;
+    color: 20px;
+}
+
 .box{
     font-size: 16px;
     width: 100%;
@@ -160,6 +314,13 @@ export default {
     display: fixed;
     top: 0;
 }
+.box > span{
+    float: left;
+    font-size: 30px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
 .boss{
     position: relative;
     display: flex;
@@ -169,6 +330,7 @@ export default {
     top: 0;
     left: 80px;
     width: 270px;
+    padding-bottom: 100px;
 }
 .card_botBox{
     background: white;
@@ -213,7 +375,7 @@ export default {
     background: #FFCC99;
     border-radius: 45px;
 }
-.footer{
+.footer > span{
     width: 20px;
     height: 20px;
     background: #FF9900; 
@@ -254,6 +416,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 .yuan.active{
     background: #333333;
@@ -272,9 +435,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 .center.active{
     background: #666666;
+
 }
 .center > span{
     font-size: 20px;
@@ -291,8 +456,10 @@ export default {
     align-items: center;
     font-size: 20px;
     color: white;
+
 }
 .right.active{
     background: #FF0000;
+
 }
 </style>
