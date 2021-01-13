@@ -42,7 +42,6 @@
 <script>
 import Vue from 'vue';
 import { Card, ShareSheet } from 'vant';
-
 Vue.use(Card);
 Vue.use(ShareSheet);
 //vuex映射
@@ -65,7 +64,6 @@ export default {
    },
    methods: {
         ...mapMutations("global", ["isShowFooter"]),
-
        choseNum() {
            this.showlist = true
        },
@@ -109,6 +107,7 @@ export default {
    },
    
    created() {
+
         // console.log(this.$store.state.global.manjians);
         this.obj_manjian = this.$store.state.global.manjians
         this.$store.commit('global/isShowFooter',false)
