@@ -38,9 +38,7 @@ export default {
     })
   },
   computed: {
-    isShow() {
-      return this.$store.state.global.isShow
-    }
+    
   }
 }
 </script>
