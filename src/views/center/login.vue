@@ -33,6 +33,7 @@
 <script>
 import Vue from "vue";
 import { Form, Field, Button, Toast } from "vant";
+import { mapMutations } from "vuex";
 
 Vue.use(Form);
 Vue.use(Field);
@@ -47,10 +48,33 @@ export default {
     };
   },
   methods: {
+        ...mapMutations("global", ["isShowFooter"]),
     onSubmit(values) {
-      console.log("submit", values);
+      console.log(values)
+      this.$http.post("http://127.0.0.1:2004/backend/login", values)
+        .then((ret) => {
+          console.log(ret)
+          if (ret.error_code == 0) {
+              Toast.success("登录成功！");
+              // 跳转
+              // 判断是否有回调地址
+              if (this.$route.query.callback) {
+                  this.$router.push(this.$route.query.callback);
+              } else {
+                  this.$router.push("/center");
+              }
+          } else {
+              Toast.fail("登录失败！");
+          }
+      });
     },
   },
+   created() {
+       this.isShowFooter(false)
+   },
+   beforeDestroy() {
+       this.isShowFooter(true)
+   }
  
 };
 </script>

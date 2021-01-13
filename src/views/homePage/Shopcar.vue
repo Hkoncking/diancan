@@ -36,7 +36,6 @@
 <script>
 import Vue from 'vue';
 import { Card, ShareSheet } from 'vant';
-
 Vue.use(Card);
 Vue.use(ShareSheet);
 //vuex映射
@@ -50,7 +49,7 @@ export default {
        }
    },
    methods: {
-        ...mapMutations("global", ["setFooter"]),
+        ...mapMutations("global", ["isShowFooter"]),
        choseNum() {
            this.showlist = true
        },
@@ -60,10 +59,10 @@ export default {
        },
    },
    created() {
-       this.setFooter(false)
+       this.isShowFooter(false)
    },
    beforeDestroy() {
-       this.setFooter(true)
+       this.isShowFooter(true)
    }
 }
 </script>
